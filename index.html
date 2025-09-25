@@ -4,14 +4,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="imagenes/Logo.png" type="image/png">
+    <link rel="icon" href="imagenes/iconoLogo.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Barcoochentero</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <header>
-<img src="imagenes/icono_localizador.png" style="width: 15px;"><p> </p>
-
+    <section style="display: flex;">
+        <i class="fa-solid fa-location-dot" style="color: #f1eeee8f; padding: 0px 10px 0px 40px; font-size: 14px;"> </i>
+        <p style="color: #f1eeee8f; font-size: 14px; font-size: 14px;">C/ Campoamor 12 – Castellón 12001 </p>
+        <i class="fa-solid fa-phone" style="color: #f1eeee8f; padding: 0px 10px 0px 40px; font-size: 14px;"></i>
+        <a href="tel:+ 964 913 233" style="color:#f1eeee8f; font-size: 14px; text-decoration: none;"> 964 913 233</a>
+        <i class="fa-solid fa-envelope" style="color: #f1eeee8f; padding: 0px 10px 0px 40px; font-size: 14px;"></i>
+        <a href="mailto:info@pechmanlaw.com"
+            style="color: #f1eeee8f; font-size: 14px; text-decoration: none;">info@barcoochentero.es</a>
+    </section>
+    <section style="display: flex; right: 0px;">
+        <a href="https://www.facebook.com/elbarcoochentero" aria-label="Facebook"><i class="fab fa-facebook"
+                style="color: #f1eeee8f; padding: 0px 10px 0px 0px"></i></a>
+        <a href="https://www.instagram.com/elbarcoochentero/" aria-label="Instagram"><i class="fab fa-instagram"
+                style="color: #f1eeee8f; padding: 0px 10px 0px 0px"></i></a>
+        <a href="https://www.tiktok.com/@barcoochentero?_t=8rbNucEn1vt&_r=1" aria-label="Tiktok"><i
+                class="fab fa-tiktok" style="color: #f1eeee8f; padding: 0px 7em 0px 0px";></i></a>
+    </section>
 </header>
+<section style="background-color: rgb(51, 49, 50); height: 100px; align-content: center;">
+    <nav id="nav" style="display: flex; text-align: center;">
+        <img src="imagenes/Logo1.png" style="margin-left: 40px;">
+        <ul class="nav-links">
+            <li><a href="#home">EL VIAJE</a></li>
+            <li><a href="#aboutMe">EL BARCO</a></li>
+            <li><a href="#training">DOSSIER</a></li>
+            <li><a href="#work_experience">ARTISTAS</a></li>
+            <li><a href="#skills">CONTACTO</a></li>
+            <li><a href="#contact">RESERVA</a></li>
+            <li><i class="fa-solid fa-magnifying-glass" style="color: white;"></i></li>
+            <li><a href="search">☰</a></li>
+            <li>
+                <div class="lang-selector">
+                    <button id="lang-btn">
+                        <img src="https://flagcdn.com/es.svg" alt="ES" class="flag" />
+                        <span id="lang-label">ES</span>
+                    </button>
+                    <ul id="lang-menu" class="lang-menu">
+                        <li data-lang="es"><img src="https://flagcdn.com/es.svg" alt="ES" class="flag" /> Español</li>
+                        <li data-lang="en"><img src="https://flagcdn.com/gb.svg" alt="EN" class="flag" /> English</li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+        <div class="menu-toggle" id="menu-toggle">☰</div>
+    </nav>
+</section>
