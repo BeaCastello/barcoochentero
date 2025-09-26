@@ -21,3 +21,4 @@ setInterval(() => {
   let next = (currentIndex + 1) % slides.length;
   showSlide(next);
 }, 6000);
+
