@@ -283,25 +283,7 @@ ul li:hover {
   }
 }
 
-/* Footer */
 
-.footer{
-  display: flex;
-  background-color: rgb(58, 57, 57);   
-}
-
-.logo_footer{
-  width: 80px;
-  margin-right: 20px;
-  margin-left: 45px;
-  height: 80px;
-}
-.left-content{
-display: flex;
-justify-content: center;
-text-align: center;
-flex-direction: column;
-}
 
 
 

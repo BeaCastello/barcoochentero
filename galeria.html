@@ -2,167 +2,225 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Galería con contraseña Firebase</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galería</title>
   <style>
-    body { margin: 0; font-family: Arial, sans-serif; background: #f5f5f5; }
-    .galeria { display: flex; height: 100vh; }
-    .galeria-left { width: 25%; background: #222; color: white; padding: 20px; }
-    .galeria-left h1 { margin-top: 0; }
-    .galeria-left ul { list-style: none; padding: 0; }
-    .galeria-left li { padding: 10px; cursor: pointer; background: #333; margin: 5px 0; border-radius: 5px; transition: 0.3s; }
-    .galeria-left li:hover { background: #444; }
-    .galeria-right { flex: 1; padding: 20px; overflow-y: auto; }
-    .imagenes { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px; }
-    .imagen { text-align: center; }
-    .imagen img { max-width: 100%; border-radius: 8px; }
-    button { padding: 10px 20px; border: none; background: #222; color: white; border-radius: 5px; cursor: pointer; }
-    button:hover { background: #444; }
-    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; }
-    .modal-content { background: white; padding: 20px; border-radius: 10px; width: 300px; text-align: center; }
-    .modal-content input { width: 90%; padding: 8px; margin: 10px 0; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 10px 20px;
+      background: #222;
+      color: #fff;
+    }
+    header span {
+      margin-left: 8px;
+      cursor: pointer;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: #f5f5f5;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+
+    .sidebar h2 {
+      margin: 0 0 10px;
+    }
+
+    .sidebar .year-buttons button,
+    .sidebar button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 12px;
+      background: #ddd;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .sidebar .year-buttons button.active {
+      background: #999;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .sidebar button:hover, .sidebar .year-buttons button:hover {
+      background: #ccc;
+    }
+
+    .content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .gallery-grid a img {
+      width: 100%;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .gallery-grid a img:hover {
+      transform: scale(1.05);
+    }
+
+    .videos video {
+      width: 300px;
+      margin: 10px;
+      border-radius: 10px;
+    }
+
+    footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 10px 20px;
+      background: #222;
+      color: #fff;
+      flex-wrap: wrap;
+    }
+
+    footer img {
+      height: 30px;
+      margin-right: 10px;
+    }
+
+    @media(max-width: 768px){
+      main{
+        flex-direction: column;
+      }
+      .sidebar{
+        width: 100%;
+        box-shadow: none;
+      }
+      .gallery-grid{
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media(max-width: 480px){
+      .gallery-grid{
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="galeria">
-    <!-- Izquierda -->
-    <div class="galeria-left">
-      <h1>Galería</h1>
-      <p>Selecciona un año</p>
-      <ul>
-        <li onclick="mostrarImagenes(2022)">2022</li>
-        <li onclick="mostrarImagenes(2023)">2023</li>
-        <li onclick="mostrarImagenes(2024)">2024</li>
-      </ul>
-    </div>
-    <!-- Derecha -->
-    <div class="galeria-right" id="galeriaRight">
-      <h2>Selecciona un año para ver imágenes</h2>
-    </div>
-  </div>
 
-  <!-- Modal contraseña -->
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <h3>Ingrese contraseña</h3>
-      <input type="password" id="password" placeholder="Contraseña">
-      <br>
-      <button onclick="login()">Ingresar</button>
-      <button onclick="cerrarModal()">Cancelar</button>
-      <div id="error" style="color:red; margin-top:10px;"></div>
-    </div>
-  </div>
+  <header>
+    <i>⏻</i><span>Salir</span>
+  </header>
 
-  <!-- Modal subida -->
-  <div class="modal" id="uploadModal">
-    <div class="modal-content">
-      <h3>Subir imagen/video</h3>
-      <input type="file" id="fileInput" accept="image/*,video/*">
-      <br>
-      <button onclick="subirArchivo()">Subir</button>
-      <button onclick="cerrarUpload()">Cerrar</button>
-      <div id="uploadMsg" style="margin-top:10px;"></div>
-    </div>
-  </div>
+  <main>
+    <aside class="sidebar">
+      <h2>Mi Empresa</h2>
+      <p>Subtítulo aquí</p>
+      <p>Año seleccionado: <span id="yearSelected">2025</span></p>
 
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
+      <div class="year-buttons">
+        <button onclick="changeYear(2022)" id="btn2022">2022</button>
+        <button onclick="changeYear(2023)" id="btn2023">2023</button>
+        <button onclick="changeYear(2024)" id="btn2024">2024</button>
+        <button onclick="changeYear(2025)" id="btn2025" class="active">2025</button>
+      </div>
 
-    // Configuración Firebase (sustituye con la tuya)
-    const firebaseConfig = {
-      apiKey: "TU_API_KEY",
-      authDomain: "TU_AUTH_DOMAIN",
-      projectId: "TU_PROJECT_ID",
-      storageBucket: "TU_STORAGE_BUCKET",
-      messagingSenderId: "TU_MSG_SENDER",
-      appId: "TU_APP_ID"
+      <button onclick="showPhotos()">📷 Foto</button>
+      <button onclick="showVideos()">🎬 Videos</button>
+    </aside>
+
+    <section class="content" id="content">
+      <h3>Selecciona una categoría</h3>
+    </section>
+  </main>
+
+  <footer>
+    <img src="https://via.placeholder.com/40" alt="logo">
+    <span style="margin-right:10px;">Galería</span>
+  </footer>
+
+  <script>
+    const data = {
+      2022: {
+        fotos: ["https://via.placeholder.com/600x400?text=Foto+2022-1", "https://via.placeholder.com/600x400?text=Foto+2022-2", "https://via.placeholder.com/600x400?text=Foto+2022-3", "https://via.placeholder.com/600x400?text=Foto+2022-4"],
+        videos: ["https://www.w3schools.com/html/mov_bbb.mp4"]
+      },
+      2023: {
+        fotos: ["https://via.placeholder.com/600x400?text=Foto+2023-1", "https://via.placeholder.com/600x400?text=Foto+2023-2", "https://via.placeholder.com/600x400?text=Foto+2023-3"],
+        videos: ["https://www.w3schools.com/html/movie.mp4"]
+      },
+      2024: {
+        fotos: ["https://via.placeholder.com/600x400?text=Foto+2024-1", "https://via.placeholder.com/600x400?text=Foto+2024-2", "https://via.placeholder.com/600x400?text=Foto+2024-3"],
+        videos: []
+      },
+      2025: {
+        fotos: ["https://via.placeholder.com/600x400?text=Foto+2025-1", "https://via.placeholder.com/600x400?text=Foto+2025-2", "https://via.placeholder.com/600x400?text=Foto+2025-3"],
+        videos: ["https://www.w3schools.com/html/mov_bbb.mp4"]
+      }
     };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const storage = getStorage(app);
+    let currentYear = 2025;
 
-    // Usuario fijo (email oculto, solo usamos password)
-    const ADMIN_EMAIL = "admin@galeria.com";
-
-    // Imágenes de ejemplo
-    const imagenesPorAno = {
-      2022: [{src: "https://via.placeholder.com/300x200?text=2022+Foto+1", titulo: "Evento 1"}],
-      2023: [{src: "https://via.placeholder.com/300x200?text=2023+Foto+1", titulo: "Evento 1"}],
-      2024: []
-    };
-
-    let anoSeleccionado = null;
-
-    window.mostrarImagenes = function(ano) {
-      anoSeleccionado = ano;
-      const galeriaRight = document.getElementById("galeriaRight");
-      galeriaRight.innerHTML = `<h2>Imágenes del ${ano}</h2>`;
-      
-      const contenedor = document.createElement("div");
-      contenedor.className = "imagenes";
-      
-      imagenesPorAno[ano].forEach(img => {
-        const div = document.createElement("div");
-        div.className = "imagen";
-        div.innerHTML = `<img src="${img.src}" alt="${img.titulo}"><p>${img.titulo}</p>`;
-        contenedor.appendChild(div);
-      });
-
-      galeriaRight.appendChild(contenedor);
-
-      const boton = document.createElement("button");
-      boton.textContent = "Subir imágenes";
-      boton.onclick = abrirModal;
-      galeriaRight.appendChild(boton);
+    function changeYear(year){
+      currentYear = year;
+      document.getElementById("yearSelected").textContent = year;
+      document.getElementById("content").innerHTML = `<h3>Año ${year} seleccionado</h3>`;
+      // actualizar botones activos
+      document.querySelectorAll('.year-buttons button').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(`btn${year}`).classList.add('active');
     }
 
-    window.abrirModal = function() {
-      document.getElementById("modal").style.display = "flex";
-    }
-    window.cerrarModal = function() {
-      document.getElementById("modal").style.display = "none";
-      document.getElementById("error").textContent = "";
-    }
-    window.cerrarUpload = function() {
-      document.getElementById("uploadModal").style.display = "none";
-      document.getElementById("uploadMsg").textContent = "";
-    }
-
-    // Login SOLO con contraseña
-    window.login = function() {
-      const password = document.getElementById("password").value;
-      signInWithEmailAndPassword(auth, ADMIN_EMAIL, password)
-        .then(() => {
-          document.getElementById("modal").style.display = "none";
-          document.getElementById("uploadModal").style.display = "flex";
-        })
-        .catch(error => {
-          document.getElementById("error").textContent = "Contraseña incorrecta.";
-        });
-    }
-
-    // Subir archivo
-    window.subirArchivo = function() {
-      const file = document.getElementById("fileInput").files[0];
-      if(!file){
-        document.getElementById("uploadMsg").textContent = "Seleccione un archivo.";
+    function showPhotos(){
+      const fotos = data[currentYear].fotos;
+      if(fotos.length === 0){
+        document.getElementById("content").innerHTML = `<p>No hay fotos en ${currentYear}</p>`;
         return;
       }
+      let html = `<h3>Fotos ${currentYear}</h3><div class='gallery-grid'>`;
+      fotos.forEach(src => {
+        html += `<a href="${src}" download><img src="${src}" alt="foto"></a>`;
+      });
+      html += `</div>`;
+      document.getElementById("content").innerHTML = html;
+    }
 
-      const storageRef = ref(storage, `${anoSeleccionado}/${file.name}`);
-      uploadBytes(storageRef, file)
-        .then(() => getDownloadURL(storageRef))
-        .then(url => {
-          imagenesPorAno[anoSeleccionado].push({src: url, titulo: file.name});
-          mostrarImagenes(anoSeleccionado);
-          document.getElementById("uploadMsg").textContent = "Subida exitosa ✅";
-        })
-        .catch(err => {
-          document.getElementById("uploadMsg").textContent = "Error: " + err.message;
-        });
+    function showVideos(){
+      const videos = data[currentYear].videos;
+      if(videos.length === 0){
+        document.getElementById("content").innerHTML = `<p>No hay videos en ${currentYear}</p>`;
+        return;
+      }
+      let html = `<h3>Videos ${currentYear}</h3><div class='videos'>`;
+      videos.forEach(src => {
+        html += `<video controls src="${src}"></video><br><a href="${src}" download>⬇ Descargar</a>`;
+      });
+      html += `</div>`;
+      document.getElementById("content").innerHTML = html;
     }
   </script>
 </body>
