@@ -38,7 +38,7 @@
 
     <!-- Modal de login oculto -->
     <div id="loginModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
-      background:rgba(0,0,0,0.5); justify-content:center; align-items:center;">
+      background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index: 2;">
       <div style="background:white; padding:20px; border-radius:10px; width:300px; text-align:center;">
         <h3>Acceso requerido</h3>
         <input type="email" id="email" placeholder="Usuario (email)" style="width:90%; margin:10px 0; padding:5px;">
@@ -53,9 +53,9 @@
     <input type="file" id="fileInput" style="display:none;" accept="image/*" onchange="uploadImage(event)">
 
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.3.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.3.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.3.0/firebase-storage-compat.js"></script>
   </div>
     
 
