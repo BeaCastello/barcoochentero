@@ -25,20 +25,31 @@
     </section>
   </header>
 
-  <div style="background: #222; padding: 5px; display: flex; height: 40px; align-items: center;">
-    <i class="fas fa-sign-out-alt" style="margin-right: 10px; color: white; margin-left: 15px;"></i>
-    <a href="index.html" style="color: white; text-decoration: none; margin-right: 30px;">Salir</a>
+  <div
+    style="background: #222; padding: 5px; display: flex; height: 40px; align-items: center; justify-content: right;">
+    <i class="fas fa-home" style="margin-right: 10px; color: white; margin-left: 15px;"></i>
+    <a href="index.html" style="color: white; text-decoration: none; margin-right: 20px;"> Inicio</a>
 
-
-    <!-- Botón para subir imagen -->
     <div onclick="showLoginForm()" style="display:flex; align-items:center; cursor:pointer;">
-      <i class="fas fa-upload" style="color: white;"></i>
-      <p style="margin-left: 15px; color: white;">Subir imagen</p>
+      <i class="fas fa-user" style="color: white;"></i>
+      <p style="margin-left: 15px; color: white; margin-right: 20px;">Logearse</p>
     </div>
 
-    <!-- Modal de login oculto -->
+ <!-- Subir imagen -->
+    <div id="uploadBtn" onclick="triggerFileInput()"  style="display:none; align-items:center; cursor:pointer; ">
+  <i class="fas fa-upload" style="color: white;"></i>
+  <p style="margin-left: 15px; color: white;">Subir imagen</p>
+  </div>
+
+  <!-- Input oculto para subir archivo -->
+<input type="file" id="fileInput" accept="image/*" style="display:none" onchange="previewImage(event)">
+
+<!-- Contenedor para mostrar imágenes subidas -->
+<div id="gallery" style="margin-top:20px; display:flex; flex-wrap:wrap; gap:10px;"></div>
+
+    <!-- Modal de login -->
     <div id="loginModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
-      background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index: 2;">
+  background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index: 2;">
       <div style="background:white; padding:20px; border-radius:10px; width:300px; text-align:center;">
         <h3>Acceso requerido</h3>
         <input type="email" id="email" placeholder="Usuario (email)" style="width:90%; margin:10px 0; padding:5px;">
@@ -49,15 +60,16 @@
       </div>
     </div>
 
-    <!-- Input file oculto -->
-    <input type="file" id="fileInput" style="display:none;" accept="image/*" onchange="uploadImage(event)">
+
+
+    
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/12.3.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/12.3.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/12.3.0/firebase-storage-compat.js"></script>
   </div>
-    
+
 
   <div style="display:flex; min-height:80vh;">
     <!-- Sidebar izquierda -->
@@ -109,11 +121,15 @@
     </div>
 
     <div style="display: flex; flex-direction: column; margin-top: 20px; margin-left: 40px;">
-    <a href="avisoLegal.html" target="_blank" data-i18n="download" style=" text-decoration: none; font-size: 16px; color: white;line-height: 25px;">Aviso Legal </a>
-    <a href="politicaP.html" target="_blank" data-i18n="download" style=" text-decoration: none; font-size: 16px; color: white;line-height: 25px;">Política de privacidad </a>
-    <a href="politicaCookies.html" target="_blank" data-i18n="download"style=" text-decoration: none; font-size: 16px; color: white; line-height: 25px;">Política de cookies </a>
-    <a href="accesibilidad.html" target="_blank" data-i18n="download" style=" text-decoration: none; font-size: 16px; color: white; line-height: 25px;">Accesibilidad </a>
-  </div>
+      <a href="avisoLegal.html" target="_blank" data-i18n="download"
+        style=" text-decoration: none; font-size: 16px; color: white;line-height: 25px;">Aviso Legal </a>
+      <a href="politicaP.html" target="_blank" data-i18n="download"
+        style=" text-decoration: none; font-size: 16px; color: white;line-height: 25px;">Política de privacidad </a>
+      <a href="politicaCookies.html" target="_blank" data-i18n="download"
+        style=" text-decoration: none; font-size: 16px; color: white; line-height: 25px;">Política de cookies </a>
+      <a href="accesibilidad.html" target="_blank" data-i18n="download"
+        style=" text-decoration: none; font-size: 16px; color: white; line-height: 25px;">Accesibilidad </a>
+    </div>
 
     <div>
       <p style="text-align: center; color: white; margin-left: 40px; margin-top: 60px;">© EL BARCO OCHENTERO 2024</p>
