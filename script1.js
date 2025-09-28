@@ -33,3 +33,67 @@
       document.querySelectorAll(".year-buttons button").forEach(btn => btn.classList.remove("active"));
       document.getElementById("btn" + year).classList.add("active");
     }
+
+
+    // Configuración de Firebase 
+  const firebaseConfig = {
+    apiKey: "TU_API_KEY",
+    authDomain: "TU_PROJECT_ID.firebaseapp.com",
+    projectId: "TU_PROJECT_ID",
+    storageBucket: "TU_PROJECT_ID.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "1:123456789:web:abcdef"
+  };
+
+  // Inicializar Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const storage = firebase.storage();
+
+  // Mostrar formulario login
+  function showLoginForm() {
+    document.getElementById("loginModal").style.display = "flex";
+  }
+
+  // Cerrar login
+  function closeLoginForm() {
+    document.getElementById("loginModal").style.display = "none";
+  }
+
+  // Login en Firebase
+  function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then(userCredential => {
+        alert("Acceso permitido ✅");
+        closeLoginForm();
+        document.getElementById("fileInput").click(); // abre selector de archivos
+      })
+      .catch(error => {
+        alert("Error: " + error.message);
+      });
+  }
+
+  // Subida de imagen
+  function uploadImage(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const storageRef = storage.ref('imagenes/' + file.name);
+    const uploadTask = storageRef.put(file);
+
+    uploadTask.on('state_changed', 
+      snapshot => {
+        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Progreso: " + progress + "%");
+      }, 
+      error => {
+        alert("Error al subir: " + error.message);
+      }, 
+      () => {
+        alert("Imagen subida correctamente ✅");
+      }
+    );
+  }
