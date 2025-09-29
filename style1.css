@@ -68,13 +68,7 @@ body {
       background: #ccc;
     }
 
-    .content {
-      flex: 1;
-      padding: 20px;
-      overflow-y: auto;
-      position: relative;
-    }
-
+    
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);

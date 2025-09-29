@@ -34,7 +34,7 @@ function changeYear(year) {
     document.getElementById("btn" + year).classList.add("active");
 }
 
-// 🔑 Usuario y contraseña predeterminados (cámbialos aquí)
+// Usuario y contraseña predeterminados 
 const USER_EMAIL = "info@elbarcoochentero.es";
 const USER_PASS = "123456";
 
@@ -87,30 +87,74 @@ function triggerFileInput() {
     document.getElementById("fileInput").click();
 }
 
-// Vista previa de la imagen subida
-function previewImage(event) {
+// Manejo de archivos
+  function handleFile(event) {
     const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            const img = document.createElement("img");
-            img.src = e.target.result;
-            img.style.width = "150px";
-            img.style.borderRadius = "10px";
-            img.style.boxShadow = "0 0 5px rgba(0,0,0,0.5)";
-            document.getElementById("gallery").appendChild(img);
-        }
-        reader.readAsDataURL(file);
-    }
-}
+    if (!file) return;
 
-// Verificar sesión al cargar
-window.onload = () => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const fileData = {
+        name: file.name,
+        type: file.type,
+        data: e.target.result
+      };
+
+      // Guardar en localStorage
+      let files = JSON.parse(localStorage.getItem("galleryFiles")) || [];
+      files.push(fileData);
+      localStorage.setItem("galleryFiles", JSON.stringify(files));
+
+      // Mostrar en galería
+      displayFile(fileData);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Mostrar archivo en galería
+  function displayFile(fileData) {
+    const container = document.createElement("div");
+    container.style.width = "200px";
+    container.style.textAlign = "center";
+
+    if (fileData.type.startsWith("image/")) {
+      const img = document.createElement("img");
+      img.src = fileData.data;
+      img.style.width = "100%";
+      img.style.borderRadius = "10px";
+      container.appendChild(img);
+    } else if (fileData.type.startsWith("video/")) {
+      const video = document.createElement("video");
+      video.src = fileData.data;
+      video.controls = true;
+      video.style.width = "100%";
+      video.style.borderRadius = "10px";
+      container.appendChild(video);
+    }
+
+    // Botón de descarga
+    const link = document.createElement("a");
+    link.href = fileData.data;
+    link.download = fileData.name;
+    link.innerText = "Descargar";
+    link.style.display = "block";
+    link.style.marginTop = "8px";
+
+    container.appendChild(link);
+    document.getElementById("gallery").appendChild(container);
+  }
+
+  // Cargar archivos guardados
+  window.onload = () => {
+    // Restaurar sesión
     if (sessionStorage.getItem("userRole") === "uploader") {
-        document.getElementById("uploadBtn").style.display = "flex";
-        document.getElementById("logoutBtn").style.display = "flex";
-        document.getElementById("loginBtn").style.display = "none";
+      document.getElementById("uploadBtn").style.display = "flex";
+      document.getElementById("logoutBtn").style.display = "flex";
+      document.getElementById("loginBtn").style.display = "none";
     }
-};
 
-
+    // Mostrar galería
+    let files = JSON.parse(localStorage.getItem("galleryFiles")) || [];
+    files.forEach(displayFile);
+  };
+  
